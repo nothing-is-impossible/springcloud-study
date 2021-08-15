@@ -1,0 +1,37 @@
+server:
+  port: 9527
+
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    gateway:
+#      开启动态路由
+      discovery:
+        locator:
+          enabled: true
+
+      routes:
+        - id: payment-route #路由的 id, 没有规定规则但要求唯一 , 建议配合服务名
+#          uri: http://localhost:8001   #匹配后提供服务的路由地址
+          uri: lb://cloud-payment-service  #匹配后提供服务的路由地址(动态路由地址对比上面，不用写死)
+          predicates:
+            - Path=/payment/**
+#            - Cookie=username,zhanghao  #cookie
+#            - Header=X-request-id,\d+   #请求头断言
+#        - id: payment-route2 #路由的 id, 没有规定规则但要求唯一 , 建议配合服务名
+#            uri: http://localhost:8001   #匹配后提供服务的路由地址
+#            predicates:
+#              - Path=/payment/lb/**
+
+
+eureka:
+  instance:
+    hostname: cloud-gateway-service
+  client:
+    register-with-eureka: true
+    #    是否从Eureka Server抓去已有的注册信息，默认为true，单点无所谓，集群必须设置为true才能配合ribbon使用负载均衡
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+#      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka

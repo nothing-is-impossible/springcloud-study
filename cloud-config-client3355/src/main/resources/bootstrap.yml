@@ -1,0 +1,34 @@
+server:
+  port: 3355
+
+  #注册zookeeper服务中心
+
+spring:
+  application:
+    name: cloud-config-client
+  cloud:
+    config:
+      #读取分支
+      label: main
+      name: config  #配置文件名称
+      profile: dev  #开发环境 （和上面name组合成一个完整的yml：config-dev.yml）
+      uri: http://localhost:3344   #配置中心地址
+      #rabbitmq的相关配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+    #      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka    #集群板
+
+#暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

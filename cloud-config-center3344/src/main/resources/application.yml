@@ -1,0 +1,44 @@
+server:
+  port: 3344
+
+  #注册zookeeper服务中心
+
+spring:
+  application:
+    name: cloud-config-center
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/nothing-is-impossible/springcloud-config.git #git仓库名
+          #搜索目录
+          username: nothing-is-impossible
+          password: zhangHAO@24
+          search-paths:
+            - springcloud-config
+          timeout: 10000
+      #读取分支
+      label: main
+
+      #rabbitmq的相关配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+    #      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka    #集群板
+
+#暴露bus刷新配置的端点（bus/refresh）
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "bus-refresh"
